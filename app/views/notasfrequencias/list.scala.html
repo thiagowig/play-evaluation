@@ -1,0 +1,101 @@
+@(disciplinas: List[Disciplina])
+
+@import helper._
+@import helper.twitterBootstrap._
+@import src.domain.enumeration.TipoFrequenciaEnum
+@import src.domain.enumeration.TipoNotaEnum
+
+@main("Notas e Frequencia do Aluno") {
+	
+	<style>
+		.table-bordered > thead > tr > th {
+			vertical-align: middle;
+			text-align: center;
+		}
+	</style>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+		    $('#notaFrequenciaTable').dataTable();
+		} );
+	</script>
+	
+	<h1 class="page-header">Notas e Frequencia do Aluno</h1>
+
+	@if(flash.containsKey("error")) {
+    	<div class="alert alert-danger">
+			<strong>ERRO</strong> @flash.get("error")
+        </div>
+    }    
+    
+    @if(disciplinas.isEmpty()) {
+		<div class="alert alert-warning">
+			Nenhum registro encontrado 
+		</div>
+    } else {
+    
+	    <table id="notaFrequenciaTable" class="table table-bordered">
+	    
+	    	<thead>
+	    		<tr>
+	    			<th rowspan="2" style="">Id</th>
+	    			<th rowspan="2" style="vertical-align: middle;">Disciplina</th>
+	    			<th rowspan="2" style="vertical-align: middle;">C/H</th>
+	    			<th rowspan="2" style="vertical-align: middle;">Turma</th>
+	    			
+	    			<th colspan="@TipoFrequenciaEnum.values().length" style="vertical-align: middle;">Frequencia</th>
+	    			
+	    			<th colspan="@TipoNotaEnum.values().length" style="vertical-align: middle;">Notas</th>
+	    			
+	    			<th rowspan="2" style="vertical-align: middle;">Situacao</th>			
+	    		</tr>
+	    		<tr>
+	    			@for(tipoFrequencia <- TipoFrequenciaEnum.values()) {
+		    			<th style="vertical-align: middle;">@tipoFrequencia.value</th>
+	    			}
+	    			
+	    			@for(tipoNota <- TipoNotaEnum.values()) {
+		    			<th style="vertical-align: middle;">@tipoNota.value</th>
+	    			}
+	    		</tr>
+	    	</thead>
+	    	
+	    	<tbody>    	
+	    		@for(disciplina <- disciplinas) {
+	    			<tr>
+	    				<td>
+	    					@disciplina.id
+	    				</td>
+	    				<td>
+	    					@disciplina.nome
+	    				</td>
+	    				<td>
+	    					@disciplina.cargaHoraria
+	    				</td>
+	    				<td>
+	    					@disciplina.turma.nome
+	    				</td>
+	    				
+	    				@for(tipoFrequencia <- TipoFrequenciaEnum.values()) {
+			    			<td>
+		    					@disciplina.findFrequenciaValue(tipoFrequencia.name())
+		    				</td>
+		    			}
+		    			
+		    			@for(tipoNota <- TipoNotaEnum.values()) {
+			    			<td>
+		    					@disciplina.findNotaValue(tipoNota.name())
+		    				</td>
+		    			}
+		    			
+	    				<td>
+	    					SITUACAO
+	    				</td>
+	    			</tr>	
+	    		}
+	    	</tbody>
+	    
+	    </table>
+    }
+
+}

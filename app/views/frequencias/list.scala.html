@@ -1,0 +1,65 @@
+@(frequencias: List[Frequencia])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Frequencia") {
+	
+	<div align="right">
+    	<a class="btn btn-info" href="@routes.FrequenciaController.create()">Criar novo</a>
+    </div>
+	
+	<h1 class="page-header">Lista de Frequencias</h1>
+
+	@if(flash.containsKey("error")) {
+    	<div class="alert alert-danger">
+			<strong>ERRO</strong> @flash.get("error")
+        </div>
+    }
+    
+    
+    @if(frequencias.isEmpty()) {
+		<div class="alert alert-warning">
+			Nenhum registro encontrado 
+		</div>
+    } else {
+    
+	    <table class="table">
+	    
+	    	<thead>
+	    		<tr>
+	    			<th>Id</th>
+	    			<th>Tipo da Frequencia</th>
+	    			<th>Valor</th>    			
+	    			<th>Disciplina</th>    			
+	    		</tr>
+	    	</thead>
+	    	
+	    	<tbody>    	
+	    		@for(frequencia <- frequencias) {
+	    			<tr>
+	    				<td>
+	    					@frequencia.id
+	    				</td>
+	    				<td>
+	    					@frequencia.tipoFrequenciaEnum.value
+	    				</td>
+	    				<td>
+	    					@frequencia.valor
+	    				</td>
+	    				<td>
+	    					@frequencia.disciplina.nome
+	    				</td>
+	    				<td width="100px">
+	    					@form(routes.FrequenciaController.delete(frequencia.id)) {
+	    						<button class="btn btn-danger" type="submit" onclick="return confirm('Deseja realmente deletar este registro?')">Deletar</button>						
+	    					}
+	    				</td>
+	    			</tr>	
+	    		}
+	    	</tbody>
+	    
+	    </table>
+    }
+
+}

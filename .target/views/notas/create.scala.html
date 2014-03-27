@@ -1,0 +1,48 @@
+@(notaForm: Form[Nota])
+
+@import helper._
+@import helper.twitterBootstrap._
+@import src.domain.enumeration.TipoNotaEnum
+
+@main("Cadastro de Nota") {
+	
+	<div align="right">
+    	<a class="btn btn-info" href="@routes.NotaController.index()">Voltar</a>
+    </div>
+	
+	<h1 class="page-header">Cadastro de Nota</h1>
+
+	@if(flash.containsKey("error")) {
+    	<div class="alert alert-danger">
+			<strong>ERRO</strong> @flash.get("error")
+        </div>
+    }
+    
+    @if(flash.containsKey("success")) {
+       	<div class="alert alert-success">
+			<strong>SUCESSO</strong> @flash.get("success")
+       	</div>
+    }
+    
+    @form(routes.NotaController.save()) {
+    	
+    	@select(
+            notaForm("tipoNotaEnumSelected"), 
+            options(TipoNotaEnum.findAllConvertedToSelect()), 
+            '_label -> "Tipo da nota", 'class -> "form-control-test"
+       	)
+       	
+       	@inputText(notaForm("valor"), '_label -> "Valor", 'class -> "form-control-test")
+       	
+       	@select(
+            notaForm("disciplinaSelected"), 
+            options(Disciplina.findAllConvertedToSelect()), 
+            '_label -> "Disciplina", 'class -> "form-control-test"
+       	)
+    	
+   		<div class="actions">
+            <input type="submit" value="Salvar" class="btn btn-success"> 
+        </div>
+    }
+
+}

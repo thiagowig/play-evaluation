@@ -1,0 +1,79 @@
+@(disciplinas: List[Disciplina])
+
+@import helper._
+@import helper.twitterBootstrap._
+@import Utils.DateUtil
+
+@main("Disciplina") {
+	
+	<div align="right">
+    	<a class="btn btn-info" href="@routes.DisciplinaController.create()">Criar novo</a>
+    </div>
+	
+	<h1 class="page-header">Lista de Disciplinas</h1>
+
+	@if(flash.containsKey("error")) {
+    	<div class="alert alert-danger">
+			<strong>ERRO</strong> @flash.get("error")
+        </div>
+    }
+    
+    
+    @if(disciplinas.isEmpty()) {
+		<div class="alert alert-warning">
+			Nenhum registro encontrado 
+		</div>
+    } else {
+    
+	    <table class="table">
+	    
+	    	<thead>
+	    		<tr>
+	    			<th>Id</th>
+	    			<th>Nome</th>
+	    			<th>Carga Horaria</th>
+	    			<th>Turma</th>
+	    			<th>Data de inicio</th>
+	    			<th>Data de fim</th>
+	    			<th>Curso</th>
+	    			<th></th>    			
+	    		</tr>
+	    	</thead>
+	    	
+	    	<tbody>    	
+	    		@for(disciplina <- disciplinas) {
+	    			<tr>
+	    				<td>
+	    					@disciplina.id
+	    				</td>
+	    				<td>
+	    					@disciplina.nome
+	    				</td>
+	    				<td>
+	    					@disciplina.cargaHoraria
+	    				</td>
+	    				<td>
+	    					@disciplina.turma.nome
+	    				</td>
+	    				<td>
+	    					@DateUtil.formatInBrazilianWay(disciplina.dataInicio)
+	    				</td>
+	    				<td>
+	    					@DateUtil.formatInBrazilianWay(disciplina.dataFim)
+	    				</td>
+	    				<td>
+	    					@disciplina.curso.nome
+	    				</td>
+	    				<td width="100px">
+	    					@form(routes.DisciplinaController.delete(disciplina.id)) {
+	    						<button class="btn btn-danger" type="submit" onclick="return confirm('Deseja realmente deletar este registro?')">Deletar</button>						
+	    					}
+	    				</td>
+	    			</tr>	
+	    		}
+	    	</tbody>
+	    
+	    </table>
+    }
+
+}

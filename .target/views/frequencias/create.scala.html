@@ -1,0 +1,48 @@
+@(frequenciaForm: Form[Frequencia])
+
+@import helper._
+@import helper.twitterBootstrap._
+@import src.domain.enumeration.TipoFrequenciaEnum
+
+@main("Cadastro de Frequencia") {
+	
+	<div align="right">
+    	<a class="btn btn-info" href="@routes.FrequenciaController.index()">Voltar</a>
+    </div>
+	
+	<h1 class="page-header">Cadastro de Frequencia</h1>
+
+	@if(flash.containsKey("error")) {
+    	<div class="alert alert-danger">
+			<strong>ERRO</strong> @flash.get("error")
+        </div>
+    }
+    
+    @if(flash.containsKey("success")) {
+       	<div class="alert alert-success">
+			<strong>SUCESSO</strong> @flash.get("success")
+       	</div>
+    }
+    
+    @form(routes.FrequenciaController.save()) {
+    	
+    	@select(
+            frequenciaForm("tipoFrequenciaEnumSelected"), 
+            options(TipoFrequenciaEnum.findAllConvertedToSelect()), 
+            '_label -> "Tipo da frequencia", 'class -> "form-control-test"
+       	)
+       	
+       	@inputText(frequenciaForm("valor"), '_label -> "Valor", 'class -> "form-control-test")
+       	
+       	@select(
+            frequenciaForm("disciplinaSelected"), 
+            options(Disciplina.findAllConvertedToSelect()), 
+            '_label -> "Disciplina", 'class -> "form-control-test"
+       	)
+    	
+   		<div class="actions">
+            <input type="submit" value="Salvar" class="btn btn-success"> 
+        </div>
+    }
+
+}

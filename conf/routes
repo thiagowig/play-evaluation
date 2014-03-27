@@ -1,0 +1,36 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           	controllers.Application.index()
+
+GET 	/turma							controllers.TurmaController.index()
+GET 	/turma/create					controllers.TurmaController.create()
+POST 	/turma/save						controllers.TurmaController.save()
+POST 	/turma/deletar/:id				controllers.TurmaController.delete(id: Int)
+
+GET 	/curso							controllers.CursoController.index()
+GET 	/curso/create					controllers.CursoController.create()
+POST 	/curso/save						controllers.CursoController.save()
+POST 	/curso/deletar/:id				controllers.CursoController.delete(id: Int)
+
+GET 	/disciplina						controllers.DisciplinaController.index()
+GET 	/disciplina/create				controllers.DisciplinaController.create()
+POST 	/disciplina/save				controllers.DisciplinaController.save()
+POST 	/disciplina/deletar/:id			controllers.DisciplinaController.delete(id: Int)
+
+GET 	/nota							controllers.NotaController.index()
+GET 	/nota/create					controllers.NotaController.create()
+POST 	/nota/save						controllers.NotaController.save()
+POST 	/nota/deletar/:id				controllers.NotaController.delete(id: Int)
+
+GET 	/frequencia						controllers.FrequenciaController.index()
+GET 	/frequencia/create				controllers.FrequenciaController.create()
+POST 	/frequencia/save				controllers.FrequenciaController.save()
+POST 	/frequencia/deletar/:id			controllers.FrequenciaController.delete(id: Int)
+
+GET 	/consulta/notafrequencia		controllers.NotaFrequenciaController.index()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               	controllers.Assets.at(path="/public", file)

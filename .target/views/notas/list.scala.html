@@ -1,0 +1,65 @@
+@(notas: List[Nota])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Nota") {
+	
+	<div align="right">
+    	<a class="btn btn-info" href="@routes.NotaController.create()">Criar novo</a>
+    </div>
+	
+	<h1 class="page-header">Lista de Notas</h1>
+
+	@if(flash.containsKey("error")) {
+    	<div class="alert alert-danger">
+			<strong>ERRO</strong> @flash.get("error")
+        </div>
+    }
+    
+    
+    @if(notas.isEmpty()) {
+		<div class="alert alert-warning">
+			Nenhum registro encontrado 
+		</div>
+    } else {
+    
+	    <table class="table">
+	    
+	    	<thead>
+	    		<tr>
+	    			<th>Id</th>
+	    			<th>Tipo da Nota</th>
+	    			<th>Valor</th>    			
+	    			<th>Disciplina</th>    			
+	    		</tr>
+	    	</thead>
+	    	
+	    	<tbody>    	
+	    		@for(nota <- notas) {
+	    			<tr>
+	    				<td>
+	    					@nota.id
+	    				</td>
+	    				<td>
+	    					@nota.tipoNotaEnum.value
+	    				</td>
+	    				<td>
+	    					@nota.valor
+	    				</td>
+	    				<td>
+	    					@nota.disciplina.nome
+	    				</td>
+	    				<td width="100px">
+	    					@form(routes.NotaController.delete(nota.id)) {
+	    						<button class="btn btn-danger" type="submit" onclick="return confirm('Deseja realmente deletar este registro?')">Deletar</button>						
+	    					}
+	    				</td>
+	    			</tr>	
+	    		}
+	    	</tbody>
+	    
+	    </table>
+    }
+
+}

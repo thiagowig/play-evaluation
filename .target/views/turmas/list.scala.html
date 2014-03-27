@@ -1,0 +1,64 @@
+@(turmas: List[Turma])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Turma") {
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+		    $('#turmaTable').dataTable();
+		} );
+	</script>
+	
+	<div align="right">
+    	<a class="btn btn-info" href="@routes.TurmaController.create()">Criar novo</a>
+    </div>
+	
+	<h1 class="page-header">Lista de Turmas</h1>
+
+	@if(flash.containsKey("error")) {
+    	<div class="alert alert-danger">
+			<strong>ERRO</strong> @flash.get("error")
+        </div>
+    }
+    
+    
+    @if(turmas.isEmpty()) {
+		<div class="alert alert-warning">
+			Nenhum registro encontrado 
+		</div>
+    } else {
+    
+	    <table id="turmaTable" class="table">
+	    
+	    	<thead>
+	    		<tr>
+	    			<th>Id</th>
+	    			<th>Nome</th>
+	    			<th></th>    			
+	    		</tr>
+	    	</thead>
+	    	
+	    	<tbody>    	
+	    		@for(turma <- turmas) {
+	    			<tr>
+	    				<td>
+	    					@turma.id
+	    				</td>
+	    				<td>
+	    					@turma.nome
+	    				</td>
+	    				<td width="100px">
+	    					@form(routes.TurmaController.delete(turma.id)) {
+	    						<button class="btn btn-danger" type="submit" onclick="return confirm('Deseja realmente deletar este registro?')">Deletar</button>						
+	    					}
+	    				</td>
+	    			</tr>	
+	    		}
+	    	</tbody>
+	    
+	    </table>
+    }
+
+}

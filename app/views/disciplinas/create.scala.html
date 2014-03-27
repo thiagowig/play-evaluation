@@ -1,0 +1,53 @@
+@(disciplinaForm: Form[Disciplina])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Cadastro de Disciplina") {
+	
+	<div align="right">
+    	<a class="btn btn-info" href="@routes.DisciplinaController.index()">Voltar</a>
+    </div>
+	
+	<h1 class="page-header">Cadastro de Disciplina</h1>
+
+	@if(flash.containsKey("error")) {
+    	<div class="alert alert-danger">
+			<strong>ERRO</strong> @flash.get("error")
+        </div>
+    }
+    
+    @if(flash.containsKey("success")) {
+       	<div class="alert alert-success">
+			<strong>SUCESSO</strong> @flash.get("success")
+       	</div>
+    }
+    
+    @form(routes.DisciplinaController.save()) {
+    	
+    	@inputText(disciplinaForm("nome"), '_label -> "Nome", 'class -> "form-control-test")  
+    	 
+    	@inputText(disciplinaForm("cargaHoraria"), '_label -> "Carga Horaria", 'class -> "form-control-test")
+    	
+    	@select(
+            disciplinaForm("turmaSelected"), 
+            options(Turma.findAllConvertedToSelect()), 
+            '_label -> "Turma", 'class -> "form-control-test"
+       	)
+       	
+		@inputDate(disciplinaForm("dataInicio"), '_label -> "Data de inicio", 'class -> "form-control-test")
+		
+    	@inputDate(disciplinaForm("dataFim"), '_label -> "Data de fim", 'class -> "form-control-test")
+       	
+    	@select(
+            disciplinaForm("cursoSelected"), 
+            options(Curso.findAllConvertedToSelect()), 
+            '_label -> "Curso", 'class -> "form-control-test"
+       	)
+    	
+   		<div class="actions">
+            <input type="submit" value="Salvar" class="btn btn-success"> 
+        </div>
+    }
+
+}
